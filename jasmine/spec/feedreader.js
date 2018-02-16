@@ -80,7 +80,8 @@ $(function() {
 
         // Help: https://discussions.udacity.com/t/menu-hidden-failing-even-though-clicked-removed/263809/2
         // Help: https://discussions.udacity.com/t/cant-figure-out-menu-suite-test-should-hide-menu-fails/395425
-        it('menu changes visibility when clicked, partner',function(){
+        // Help: https://discussions.udacity.com/t/looking-for-jasmine-useful-documenation-please/410627
+        it('menu changes visibility when clicked, partner', function(){
 
             // Trigger a click of the a.menu-icon-link element
             // then see if the class menu-hidden is false -
@@ -108,13 +109,21 @@ $(function() {
 
         // Use beforeEach to delay the firing of the function (since it is async)
         // by using Jasmine's done() function
+        // Also include a timeout to make sure all async functions have time to fully load
+        // Help: https://jasmine.github.io/2.1/introduction.html#section-Asynchronous_Support
+        // Help: https://discussions.udacity.com/t/testing-feed-container-for-content-for-every-feed/240845/6
         beforeEach(function (done) {
-            loadFeed(0,done);
+            setTimeout(function() {
+                loadFeed(0,done);
+            }, 1000);
         });
 
-        it('feeds loaded, man', function() {
-            // check to see if the .entry class has been instantiated at least once
-            expect($('.entry').length).toBeGreaterThan(0);
+        // Help: https://discussions.udacity.com/t/step-13-help-initial-entries/14839/9
+        it('feeds loaded, man', function(done) {
+            // check to see if the .entry child class of the .feed class has been instantiated at least once
+            // that will indicate that the feeds have been loaded
+            expect($('.feed .entry').length).toBeGreaterThan(0);
+            done();
         });
 
     });
@@ -128,25 +137,30 @@ $(function() {
          * Remember, loadFeed() is asynchronous.
          */
 
+        // Help: https://discussions.udacity.com/t/cannot-understand-how-to-write-new-feed-selection-test/246709/4
         var oldFeed;
         var newFeed;
 
         // Use beforeEach to delay the firing of the function (since it is async)
         // by using Jasmine's done() function
+        // Load a feed, capture it
         beforeEach(function (done) {
-            loadFeed(0,function(){
+            loadFeed(0, function(){
                 oldFeed = $('.feed').html();
                 done();
             });
         });
 
-        it('changes the feed', function(done) {
+        // Then, load another feed
+        // Capture it and compare with the previous feed
+        // Make sure that they are not the same
+        it('changes the feed, little buddy', function(done) {
+            // Fire the loadFeed function, passing a new value to get a different feed
             loadFeed(1, function() {
                 newFeed = $('.feed').html();
                 expect(oldFeed).not.toEqual(newFeed);
                 done();
             });
-
         });
 
     });
