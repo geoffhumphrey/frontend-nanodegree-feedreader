@@ -93,7 +93,7 @@ $(function() {
             // then see if the class menu-hidden is true
             $('a.menu-icon-link').click();
             expect($('body').hasClass('menu-hidden')).toBeTruthy();
-        })
+        });
     });
 
     /* TODO: Write a new test suite named "Initial Entries" */
